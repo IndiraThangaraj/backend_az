@@ -8,3 +8,4 @@ pgvector
 langchain
 langchain-core
 guvicorn
+uvicorn
