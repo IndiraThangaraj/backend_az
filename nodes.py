@@ -15,17 +15,17 @@ def extract_information(state: WorkflowState):
     print("---NODE: Running Information Extractor---")
     
     class ExtractedInfo(BaseModel):
-        title: str = Field(description="A concise, descriptive name for the demand...")
-        description: str = Field(description="A full narrative or explanation of the demand...")
-        request_type: str = Field(description="Feature, Bug, Enhancement, Info/query, or Strategic Initiatives.")
-        urgency_cues: str = Field(description="Any time-sensitive language...")
-        module_services: str = Field(description="The specific system, product module, or feature area involved...")
-        business_priority: str = Field(description="High, Medium, or Low business impact.")
-        customer_impact: str = Field(description="A detailed explanation of how this demand affects users...")
-        due_date: str = Field(description="Any deadline explicitly stated or implied...")
-        regulatory_impact: str = Field(description="Indicates if the demand is required for compliance...")
-        revenue_impact: str = Field(description="Describes how the demand could impact revenue streams...")
-        security_relevance: str = Field(description="Flags whether this demand touches sensitive systems or data...")
+        title: str = Field(description="A concise, descriptive name for the demand, typically summarizing what the user wants or what the feature is. This is often used as the headline.")
+        description: str = Field(description="A full narrative or explanation of the demand, including context, pain points, business reasoning, technical background, and user perspective if available.")
+        request_type: str = Field(description="•Feature: a new capability or functionality \n•Bug: something that is broken and need to be fixed. Issues that requires fixes. Keywords are fix, error, bug, failure and etc. \n•Enhancement: improvement of an existing feature. Can also be described as version numbers 2.0,3.0 and etc. \n•Info/query: request for clarification or investigation. •Strategic Initiatives : Demands related to Strategic programs and the keyword is SP.")
+        urgency_cues: str = Field(description="Any time-sensitive language, phrases, or implications that indicate how urgent the demand is. E.g., “ASAP,” “before launch,” “regulatory deadline,” “customer complaint.” Even if no explicit due date is given, this helps infer priority. Urgency cues should be taken into consideration when it comes to priority assignment for each demand.  If there is urgency cue indicated, please leave it blank.")
+        module_services: str = Field(description="The specific system, product module, or feature area involved in the demand. This helps route work to the right team. The module should be categorized into core module/service or Non-core services that is affected. Core services are services that blocks the platform from being used at all. Non-core services are considered to be less important where the platform works fine but one/some of the features/services have issues.")
+        business_priority: str = Field(description="The perceived business impact or urgency from a business value standpoint. This could be: \n• High: compliance related, revenue-driving, time-sensitive, production issue which impacts customer. \n• Medium: useful but not urgent \n• Low: optional, exploratory, or minor enhancements.")
+        customer_impact: str = Field(description="A detailed explanation of how this demand affects users. It could include: \n• Size and type of affected users. Does it affect one group of users (e.g., Tabung users, split bill users), or all users (e.g., QRPay, Fund Transfer). \n• Pain level (inconvenience vs. critical failure). Critical failures are when there are issues with core services and needs immediate action to be taken. Inconveniences are minor issues that is not impacting the platform entirely. \n• Visibility to customers (internal-only vs. public-facing). The issue is public-facing where customers and users are involved and internal when it doesn’t affect the customer.")
+        due_date: str = Field(description="Any deadline explicitly stated or clearly implied in the description (e.g., “must go live in May”, “before Hari Raya”, “before campaign X”). Useful for planning timelines and SLAs.")
+        regulatory_impact: str = Field(description="Indicates if the demand is required for compliance with a regulation or law (e.g., Bank Negara guidelines, PDPA, GDPR, audit compliance). Important for legal and risk tracking. Failure to rectify this issue will result in fine or legal actions")
+        revenue_impact: str = Field(description="Describes how the demand could impact revenue streams — either by enabling new ones (e.g., launching a product) or preventing loss (e.g., fixing a payment failure).")
+        security_relevance: str = Field(description="Flags whether this demand touches sensitive systems or data, requires authentication changes, addresses vulnerabilities, or affects customer data security.")
 
     prompt = ChatPromptTemplate.from_messages([
         ("system", "You are an AI assistant that extracts structured information from demand descriptions. Based on the schema below, extract each field."),
